@@ -1,0 +1,38 @@
+type Etudiant {
+  id: ID!
+  nom: String
+  prenom: String
+  email: String
+}
+
+type Livre {
+  id: ID!
+  titre: String
+  auteur: String
+  isbn: String
+  disponible: Boolean
+}
+
+type Emprunt {
+  id: ID!
+  etudiant: Etudiant
+  livre: Livre
+  dateEmprunt: String
+  dateRetour: String
+}
+
+type Query {
+  etudiants: [Etudiant]
+  etudiant(id: ID!): Etudiant
+  livres: [Livre]
+  livre(id: ID!): Livre
+  emprunts: [Emprunt]
+  empruntsByEtudiant(etudiantId: ID!): [Emprunt]
+}
+
+type Mutation {
+  createEtudiant(nom: String!, prenom: String!, email: String!): Etudiant
+  createLivre(titre: String!, auteur: String!, isbn: String!): Livre
+  emprunter(etudiantId: ID!, livreId: ID!): Emprunt
+  retourner(empruntId: ID!): Emprunt
+}
