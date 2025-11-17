@@ -1,15 +1,13 @@
 package graphql.repository;
 
+import graphql.Entites.EtudiantEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 
-public interface EtudiantRepository {
-
-    /**
-     * Repository JPA pour l'entité Etudiant.
-     *
-     * Rôle :
-     * - Gérer l'accès aux données concernant les étudiants.
-     * - Utilisé par les services pour l’inscription et la récupération d'étudiants.
-     */
-
+@Repository
+public interface EtudiantRepository extends JpaRepository<EtudiantEntity, Long> {
+    Optional<EtudiantEntity> findByEmail(String email);
+    boolean existsByEmail(String email);
 }

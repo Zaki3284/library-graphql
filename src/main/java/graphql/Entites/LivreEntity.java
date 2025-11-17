@@ -1,4 +1,4 @@
-package graphql.Entité;
+package graphql.Entites;
 
 
 

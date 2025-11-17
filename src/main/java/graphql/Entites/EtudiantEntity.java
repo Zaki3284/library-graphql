@@ -1,30 +1,14 @@
-package graphql.Entité;
+package graphql.Entites;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.List;
-
-/**
- * Entité Etudiant représentant un utilisateur de la bibliothèque.
- *
- * Attributs :
- * - id : identifiant unique
- * - nom : nom complet de l'étudiant
- * - email : adresse email
- *
- * Importance :
- * - Sert pour l'inscription et la gestion des emprunts dans le système.
- * - Représenté également comme type dans GraphQL.
- */
+import lombok.*;
 
 @Entity
 @Table(name = "etudiants")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class EtudiantEntity {
 
     @Id
@@ -32,12 +16,8 @@ public class EtudiantEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String nom;
+    private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
-
-    // Relation OneToMany avec EmpruntEntity
-    @OneToMany(mappedBy = "etudiant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<EmpruntEntity> emprunts;
 }
