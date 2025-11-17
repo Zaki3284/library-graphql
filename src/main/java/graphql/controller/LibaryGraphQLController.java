@@ -1,8 +1,12 @@
-package controller;
+package graphql.controller;
 
-import model.*;
-import repository.*;
-import service.LibraryService;
+import graphql.model.Emprunt;
+import graphql.model.Etudiant;
+import graphql.model.Livre;
+import graphql.repository.EmpruntRepository;
+import graphql.repository.EtudiantRepository;
+import graphql.repository.LivreRepository;
+import graphql.service.LibraryService;
 import org.springframework.graphql.data.method.annotation.*;
 import org.springframework.stereotype.Controller;
 import java.util.List;

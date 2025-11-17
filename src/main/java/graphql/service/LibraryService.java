@@ -1,7 +1,11 @@
-package service;
+package graphql.service;
 
-import model.*;
-import repository.*;
+import graphql.model.Emprunt;
+import graphql.model.Etudiant;
+import graphql.model.Livre;
+import graphql.repository.EmpruntRepository;
+import graphql.repository.EtudiantRepository;
+import graphql.repository.LivreRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;

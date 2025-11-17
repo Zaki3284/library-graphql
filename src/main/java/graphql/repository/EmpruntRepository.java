@@ -1,6 +1,6 @@
-package repository;
+package graphql.repository;
 
-import model.Emprunt;
+import graphql.model.Emprunt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 

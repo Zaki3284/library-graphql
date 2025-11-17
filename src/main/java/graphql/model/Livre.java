@@ -1,4 +1,4 @@
-package model;
+package graphql.model;
 import jakarta.persistence.*;
 import lombok.*;
 
