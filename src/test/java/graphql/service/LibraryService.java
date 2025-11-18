@@ -24,7 +24,7 @@ class LibraryServiceTest {
     private EtudiantRepository etudiantRepository;
 
     @InjectMocks
-    private LibraryService libraryService;
+    private EtudiantService etudiantService;
 
     private EtudiantEntity etudiant;
 
@@ -44,7 +44,7 @@ class LibraryServiceTest {
         when(etudiantRepository.findAll()).thenReturn(etudiants);
 
         // When
-        List<EtudiantEntity> result = libraryService.getAllEtudiants();
+        List<EtudiantEntity> result = etudiantService.getAllEtudiants();
 
         // Then
         assertNotNull(result);
@@ -59,7 +59,7 @@ class LibraryServiceTest {
         when(etudiantRepository.findById(1L)).thenReturn(Optional.of(etudiant));
 
         // When
-        Optional<EtudiantEntity> result = libraryService.getEtudiantById(1L);
+        Optional<EtudiantEntity> result = etudiantService.getEtudiantById(1L);
 
         // Then
         assertTrue(result.isPresent());
@@ -74,7 +74,7 @@ class LibraryServiceTest {
         when(etudiantRepository.save(any(EtudiantEntity.class))).thenReturn(etudiant);
 
         // When
-        EtudiantEntity result = libraryService.createEtudiant("Ahmed Ben Ali", "ahmed@example.com");
+        EtudiantEntity result = etudiantService.createEtudiant("Ahmed Ben Ali", "ahmed@example.com");
 
         // Then
         assertNotNull(result);
@@ -89,7 +89,7 @@ class LibraryServiceTest {
 
         // When & Then
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            libraryService.createEtudiant("Ahmed", "ahmed@example.com");
+            etudiantService.createEtudiant("Ahmed", "ahmed@example.com");
         });
 
         assertEquals("Un étudiant avec cet email existe déjà", exception.getMessage());
@@ -103,7 +103,7 @@ class LibraryServiceTest {
         when(etudiantRepository.save(any(EtudiantEntity.class))).thenReturn(etudiant);
 
         // When
-        EtudiantEntity result = libraryService.updateEtudiant(1L, "Ahmed Updated", "new@example.com");
+        EtudiantEntity result = etudiantService.updateEtudiant(1L, "Ahmed Updated", "new@example.com");
 
         // Then
         assertNotNull(result);
@@ -117,7 +117,7 @@ class LibraryServiceTest {
         doNothing().when(etudiantRepository).deleteById(1L);
 
         // When
-        boolean result = libraryService.deleteEtudiant(1L);
+        boolean result = etudiantService.deleteEtudiant(1L);
 
         // Then
         assertTrue(result);

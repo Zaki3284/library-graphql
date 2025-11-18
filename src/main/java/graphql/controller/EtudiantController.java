@@ -1,7 +1,7 @@
 package graphql.controller;
 
 import graphql.Entites.EtudiantEntity;
-import graphql.service.LibraryService;
+import graphql.service.EtudiantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -12,33 +12,33 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class LibraryController {
+public class EtudiantController {
 
-    private final LibraryService libraryService;
+    private final EtudiantService etudiantService;
 
     @QueryMapping
     public List<EtudiantEntity> allEtudiants() {
-        return libraryService.getAllEtudiants();
+        return etudiantService.getAllEtudiants();
     }
 
     @QueryMapping
     public EtudiantEntity etudiantById(@Argument Long id) {
-        return libraryService.getEtudiantById(id)
+        return etudiantService.getEtudiantById(id)
                 .orElseThrow(() -> new RuntimeException("Étudiant non trouvé avec l'ID: " + id));
     }
 
     @MutationMapping
     public EtudiantEntity createEtudiant(@Argument String name, @Argument String email) {
-        return libraryService.createEtudiant(name, email);
+        return etudiantService.createEtudiant(name, email);
     }
 
     @MutationMapping
     public EtudiantEntity updateEtudiant(@Argument Long id, @Argument String name, @Argument String email) {
-        return libraryService.updateEtudiant(id, name, email);
+        return etudiantService.updateEtudiant(id, name, email);
     }
 
     @MutationMapping
     public Boolean deleteEtudiant(@Argument Long id) {
-        return libraryService.deleteEtudiant(id);
+        return etudiantService.deleteEtudiant(id);
     }
 }

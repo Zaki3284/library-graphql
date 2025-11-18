@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class LibraryService {
+public class EtudiantService {
 
     private final EtudiantRepository etudiantRepository;
 
