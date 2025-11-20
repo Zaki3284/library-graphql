@@ -1,16 +1,28 @@
 type Query {
     allEtudiants: [Etudiant!]!
     etudiantById(id: ID!): Etudiant
+
+    allLivres: [Livre!]!
+    livreById(id: ID!): Livre
 }
 
 type Mutation {
     createEtudiant(name: String!, email: String!): Etudiant!
     updateEtudiant(id: ID!, name: String!, email: String!): Etudiant!
     deleteEtudiant(id: ID!): Boolean!
+
+    createLivre(name: String!): Livre!
+    updateLivre(id: ID!, name: String!): Livre!
+    deleteLivre(id: ID!): Boolean!
 }
 
 type Etudiant {
     id: ID!
     name: String!
     email: String!
+}
+
+type Livre {
+    id: ID!
+    name: String!
 }

@@ -43,7 +43,7 @@ public class EtudiantService {
         EtudiantEntity etudiant = etudiantRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Étudiant non trouvé avec l'ID: " + id));
 
-        // Utiliser 'name' au lieu de 'nom'
+
         etudiant.setName(name);
         etudiant.setEmail(email);
 
