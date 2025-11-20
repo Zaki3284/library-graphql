@@ -1,0 +1,102 @@
+# =========================
+# CREATE (ajouter un étudiant)
+# =========================
+mutation {
+  createEtudiant(name: "Mohamed", email: "mohamed@example.com") {
+    id
+    name
+    email
+  }
+}
+
+# =========================
+# READ (récupérer tous les étudiants)
+# =========================
+{
+  allEtudiants {
+    id
+    name
+    email
+  }
+}
+
+# =========================
+# READ (récupérer un étudiant par ID)
+# =========================
+{
+  etudiantById(id: 1) {
+    id
+    name
+    email
+  }
+}
+
+# =========================
+# UPDATE (mettre à jour un étudiant)
+# =========================
+mutation {
+  updateEtudiant(id: 1, name: "Mohamed Elhafedh", email: "mohamed.elhafedh@example.com") {
+    id
+    name
+    email
+  }
+}
+
+# =========================
+# DELETE (supprimer un étudiant)
+# =========================
+mutation {
+  deleteEtudiant(id: 1)
+}
+
+
+
+======================================================================================================================================================================================================================================================================================================================================================
+
+
+# =========================
+# CREATE (ajouter un livre)
+# =========================
+mutation {
+  createLivre(name: "Spring boot") {
+    id
+    name
+  }
+}
+
+# =========================
+# READ (récupérer tous les livres)
+# =========================
+{
+  allLivres {
+    id
+    name
+  }
+}
+
+# =========================
+# READ (récupérer un livre par ID)
+# =========================
+{
+  livreById(id: 1) {
+    id
+    name
+  }
+}
+
+# =========================
+# UPDATE (mettre à jour un livre)
+# =========================
+mutation {
+  updateLivre(id: 1, name: "GraphQL Avancé") {
+    id
+    name
+  }
+}
+
+# =========================
+# DELETE (supprimer un livre)
+# =========================
+mutation {
+  deleteLivre(id: 1)
+}
