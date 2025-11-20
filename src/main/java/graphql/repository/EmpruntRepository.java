@@ -1,15 +1,17 @@
 package graphql.repository;
 
+import graphql.Entites.EmpruntEntity;
+import graphql.Entites.EtudiantEntity;
+import graphql.Entites.LivreEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface EmpruntRepository {
+import java.util.List;
 
-    /**
-     * Repository JPA pour l'entité Emprunt.
-     *
-     * Rôle :
-     * - Assurer l'accès et la gestion des données d'emprunt.
-     * - Peut contenir des méthodes de recherche par étudiant ou par livre.
-     */
-
-
+@Repository
+public interface EmpruntRepository extends JpaRepository<EmpruntEntity, Long> {
+    List<EmpruntEntity> findByEtudiantId(Long etudiantId);
+    List<EmpruntEntity> findByLivreId(Long livreId);
+    List<EmpruntEntity> findByEtudiant(EtudiantEntity etudiant);
+    List<EmpruntEntity> findByLivre(LivreEntity livre);
 }

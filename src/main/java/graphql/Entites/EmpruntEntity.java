@@ -1,22 +1,33 @@
 package graphql.Entites;
 
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.LocalDateTime;
 
-
+@Entity
+@Table(name = "emprunts")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class EmpruntEntity {
 
-    /**
-     * Entité Emprunt représentant l'opération d'emprunt d’un livre par un étudiant.
-     *
-     * Attributs :
-     * - id : identifiant unique
-     * - etudiant : étudiant ayant emprunté le livre (relation ManyToOne)
-     * - livre : livre emprunté (relation ManyToOne)
-     * - dateEmprunt : date de début de l’emprunt
-     * - dateRetour : date prévue de retour
-     *
-     * Importance :
-     * - Relation clé entre Livre et Etudiant.
-     * - Permet de suivre l'historique des emprunts.
-     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "etudiant_id", nullable = false)
+    private EtudiantEntity etudiant;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "livre_id", nullable = false)
+    private LivreEntity livre;
+
+    @Column(nullable = false)
+    private LocalDateTime dateEmprunt;
+
+    private LocalDateTime dateRetour;
+
+    private LocalDateTime dateRetourPrevue;
 }

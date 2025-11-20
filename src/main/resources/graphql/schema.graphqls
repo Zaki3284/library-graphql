@@ -20,9 +20,11 @@ type Etudiant {
     id: ID!
     name: String!
     email: String!
+    livres: [Livre!]!
 }
 
 type Livre {
     id: ID!
     name: String!
+    empruntePar: Etudiant
 }
