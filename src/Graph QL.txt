@@ -1,3 +1,7 @@
+# ============================================================
+# ==================== ETUDIANT ==============================
+# ============================================================
+
 # =========================
 # CREATE (ajouter un étudiant)
 # =========================
@@ -50,9 +54,9 @@ mutation {
 }
 
 
-
-======================================================================================================================================================================================================================================================================================================================================================
-
+# ============================================================
+# ==================== LIVRE =================================
+# ============================================================
 
 # =========================
 # CREATE (ajouter un livre)
@@ -99,4 +103,154 @@ mutation {
 # =========================
 mutation {
   deleteLivre(id: 1)
+}
+
+
+# ============================================================
+# ==================== EMPRUNT ===============================
+# ============================================================
+
+# =========================
+# CREATE (créer un emprunt avec durée personnalisée)
+# =========================
+mutation {
+  createEmprunt(etudiantId: 2, livreId: 1, joursEmprunt: 14) {
+    id
+    dateEmprunt
+    dateRetour
+    retourne
+    etudiant {
+      id
+      name
+      email
+    }
+    livre {
+      id
+      name
+    }
+  }
+}
+
+# =========================
+# CREATE (créer un emprunt - durée par défaut 14 jours)
+# =========================
+mutation {
+  createEmprunt(etudiantId: 3, livreId: 2) {
+    id
+    dateEmprunt
+    dateRetour
+    retourne
+    etudiant {
+      id
+      name
+    }
+    livre {
+      id
+      name
+    }
+  }
+}
+
+# =========================
+# READ (récupérer tous les emprunts)
+# =========================
+{
+  allEmprunts {
+    id
+    dateEmprunt
+    dateRetour
+    retourne
+    etudiant {
+      id
+      name
+      email
+    }
+    livre {
+      id
+      name
+    }
+  }
+}
+
+# =========================
+# READ (récupérer un emprunt par ID)
+# =========================
+{
+  empruntById(id: 1) {
+    id
+    dateEmprunt
+    dateRetour
+    retourne
+    etudiant {
+      id
+      name
+      email
+    }
+    livre {
+      id
+      name
+    }
+  }
+}
+
+# =========================
+# READ (récupérer les emprunts d'un étudiant)
+# =========================
+{
+  empruntsByEtudiant(etudiantId: 2) {
+    id
+    dateEmprunt
+    dateRetour
+    retourne
+    livre {
+      id
+      name
+    }
+  }
+}
+
+# =========================
+# READ (récupérer les emprunts actifs / non retournés)
+# =========================
+{
+  empruntsActifs {
+    id
+    dateEmprunt
+    dateRetour
+    etudiant {
+      id
+      name
+    }
+    livre {
+      id
+      name
+    }
+  }
+}
+
+# =========================
+# UPDATE (retourner un livre)
+# =========================
+mutation {
+  retournerLivre(empruntId: 1) {
+    id
+    dateEmprunt
+    dateRetour
+    retourne
+    etudiant {
+      id
+      name
+    }
+    livre {
+      id
+      name
+    }
+  }
+}
+
+# =========================
+# DELETE (supprimer un emprunt)
+# =========================
+mutation {
+  deleteEmprunt(id: 1)
 }
