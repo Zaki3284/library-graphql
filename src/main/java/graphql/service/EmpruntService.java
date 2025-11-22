@@ -4,87 +4,84 @@ import graphql.Entites.EmpruntEntity;
 import graphql.Entites.EtudiantEntity;
 import graphql.Entites.LivreEntity;
 import graphql.repository.EmpruntRepository;
+import graphql.repository.EtudiantRepository;
+import graphql.repository.LivreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class EmpruntService {
 
     private final EmpruntRepository empruntRepository;
-    private final EtudiantService etudiantService;
-    private final LivreService livreService;
+    private final EtudiantRepository etudiantRepository;
+    private final LivreRepository livreRepository;
 
     public List<EmpruntEntity> getAllEmprunts() {
         return empruntRepository.findAll();
     }
 
-    public Optional<EmpruntEntity> getEmpruntById(Long id) {
-        return empruntRepository.findById(id);
+    public EmpruntEntity getEmpruntById(Long id) {
+        return empruntRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Emprunt non trouvé avec l'ID: " + id));
     }
 
-    public List<EmpruntEntity> getEmpruntsByEtudiantId(Long etudiantId) {
+    public List<EmpruntEntity> getEmpruntsByEtudiant(Long etudiantId) {
         return empruntRepository.findByEtudiantId(etudiantId);
     }
 
+    public List<EmpruntEntity> getEmpruntsActifs() {
+        return empruntRepository.findByRetourne(false);
+    }
+
     @Transactional
-    public EmpruntEntity createEmprunt(Long etudiantId, Long livreId, LocalDateTime dateRetourPrevue) {
-        EtudiantEntity etu = etudiantService.getEtudiantById(etudiantId)
+    public EmpruntEntity createEmprunt(Long etudiantId, Long livreId, Integer joursEmprunt) {
+        EtudiantEntity etudiant = etudiantRepository.findById(etudiantId)
                 .orElseThrow(() -> new RuntimeException("Étudiant non trouvé avec l'ID: " + etudiantId));
 
-        LivreEntity livre = livreService.getLivreById(livreId)
+        LivreEntity livre = livreRepository.findById(livreId)
                 .orElseThrow(() -> new RuntimeException("Livre non trouvé avec l'ID: " + livreId));
 
-        if (Boolean.FALSE.equals(livre.getAvailable())) {
-            throw new RuntimeException("Le livre n'est pas disponible pour emprunt.");
+        if (empruntRepository.existsByLivreIdAndRetourneFalse(livreId)) {
+            throw new RuntimeException("Ce livre est déjà emprunté");
         }
 
-        livreService.markAsBorrowed(livre);
+        LocalDate dateEmprunt = LocalDate.now();
+        LocalDate dateRetour = dateEmprunt.plusDays(joursEmprunt != null ? joursEmprunt : 14);
 
         EmpruntEntity emprunt = EmpruntEntity.builder()
-                .etudiant(etu)
+                .etudiant(etudiant)
                 .livre(livre)
-                .dateEmprunt(LocalDateTime.now())
-                .dateRetourPrevue(dateRetourPrevue)
+                .dateEmprunt(dateEmprunt)
+                .dateRetour(dateRetour)
+                .retourne(false)
                 .build();
 
         return empruntRepository.save(emprunt);
     }
 
     @Transactional
-    public EmpruntEntity markReturned(Long empruntId, LocalDateTime returnedAt) {
+    public EmpruntEntity retournerLivre(Long empruntId) {
         EmpruntEntity emprunt = empruntRepository.findById(empruntId)
                 .orElseThrow(() -> new RuntimeException("Emprunt non trouvé avec l'ID: " + empruntId));
 
-        if (emprunt.getDateRetour() != null) {
-            throw new RuntimeException("Emprunt déjà retourné.");
+        if (emprunt.getRetourne()) {
+            throw new RuntimeException("Ce livre a déjà été retourné");
         }
 
-        emprunt.setDateRetour(returnedAt == null ? LocalDateTime.now() : returnedAt);
-
-        LivreEntity livre = emprunt.getLivre();
-        livreService.markAsReturned(livre);
-
+        emprunt.setRetourne(true);
         return empruntRepository.save(emprunt);
     }
 
-    @Transactional
-    public EmpruntEntity updateEmpruntDates(Long empruntId, LocalDateTime newDateRetourPrevue) {
-        EmpruntEntity emprunt = empruntRepository.findById(empruntId)
-                .orElseThrow(() -> new RuntimeException("Emprunt non trouvé avec l'ID: " + empruntId));
-        emprunt.setDateRetourPrevue(newDateRetourPrevue);
-        return empruntRepository.save(emprunt);
-    }
-
-    @Transactional
-    public boolean deleteEmprunt(Long id) {
-        if (!empruntRepository.existsById(id)) return false;
-        empruntRepository.deleteById(id);
-        return true;
+    public Boolean deleteEmprunt(Long id) {
+        if (empruntRepository.existsById(id)) {
+            empruntRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

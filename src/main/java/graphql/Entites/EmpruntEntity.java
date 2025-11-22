@@ -2,7 +2,7 @@ package graphql.Entites;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "emprunts")
@@ -25,9 +25,11 @@ public class EmpruntEntity {
     private LivreEntity livre;
 
     @Column(nullable = false)
-    private LocalDateTime dateEmprunt;
+    private LocalDate dateEmprunt;
 
-    private LocalDateTime dateRetour;
+    @Column(nullable = false)
+    private LocalDate dateRetour;
 
-    private LocalDateTime dateRetourPrevue;
+    @Column(nullable = false)
+    private Boolean retourne = false;
 }
